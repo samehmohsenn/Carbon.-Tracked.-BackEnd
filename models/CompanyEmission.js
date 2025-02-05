@@ -1,14 +1,31 @@
 const mongoose = require("mongoose");
 
-const companyEmissionSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    industry: { type: String, required: true },
-    electricityConsumption: { type: Number, default: 0 },
-    naturalGasConsumption: { type: Number, default: 0 },
-    fuelType: { type: String, default: "none" },
-    fuelConsumption: { type: Number, default: 0 },
-    waste: [{ name: String, wasteValue: Number }],
-    productionCarbonEmitted: { type: Number, default: 0 }
-}, { timestamps: true });
+const companyEmissionSchema = new mongoose.Schema({  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  data: {
+    type: Map,
+    of: Number,
+    default: new Map()
+  },
+  month:{
+    type: "String"
+  },
+  additionDate: {
+    type: Date,
+    default: Date.now
+  },
+  calculatedEmissions: {
+    totalEmissions: Number,
+    highestEmitter: String,
+    categoryEmissions: {
+      type: Map,
+      of: Number
+    },
+    suggestions: [String]
+  }
+});
 
 module.exports = mongoose.model("CompanyEmission", companyEmissionSchema); // exports the model of the database that is based on the created schema

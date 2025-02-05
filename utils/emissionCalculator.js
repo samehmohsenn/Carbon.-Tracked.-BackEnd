@@ -1,42 +1,69 @@
-const emissionFactors = {
-    electricity: 0.5,
-    naturalGas: 2.0,
-    fuel: { diesel: 2.68, petrol: 2.31, none: 0 },
-    waste: { general: 0.8, food: 0.5, recyclables: 0.2, production: 1.5, packaging: 1.0 }
-};
+//const mongoose = require("mongoose");
+const EmissionFactor = require("../models/EmissionFactor"); // Ensure correct path
 
-const emissionReductionSuggestions = {
-    electricity: ["Switch to renewables", "Use LED lighting", "Implement smart meters"],
-    fuel: ["Switch to electric vehicles", "Optimize transport routes", "Carpooling"],
-    naturalGas: ["Improve insulation", "Use electric heating", "Use energy-efficient gas appliances"],
-    waste: ["Improve recycling", "Waste-to-energy program", "Optimize raw material usage"]
-};
+// Function to load emission factors dynamically
+const loadEmissionFactors = async () => {
+    const factorMap = {}; // Create an empty object
 
-const emissionThreshold = 5000;
+    try {
+        const emissionFactors = await EmissionFactor.find(); // Fetch all factors from DB
 
-const calculateCarbonEmission = (data) => {
-    let emissions = {
-        electricity: data.electricityConsumption * emissionFactors.electricity,
-        naturalGas: data.naturalGasConsumption * emissionFactors.naturalGas,
-        fuel: data.fuelType && emissionFactors.fuel[data.fuelType.toLowerCase()]
-            ? data.fuelConsumption * emissionFactors.fuel[data.fuelType.toLowerCase()]
-            : 0,
-        waste: 0
-    };
-
-    if (data.waste && Array.isArray(data.waste)) {
-        data.waste.forEach(wasteItem => {
-            if (emissionFactors.waste[wasteItem.name.toLowerCase()]) {
-                emissions.waste += wasteItem.wasteValue * emissionFactors.waste[wasteItem.name.toLowerCase()];
-            }
+        emissionFactors.forEach((factor) => {
+            factorMap[factor.name.toLowerCase()] = {
+                unit: factor.unit,
+                factor: factor.factor,
+                threshold: factor.threshold,
+                suggestions: factor.suggestions
+            };
         });
+        return factorMap;
+    } catch (err) {
+        console.error("Error fetching emission factors:", err);
+        return {}; // Return empty object in case of failure
     }
-
-    let totalEmissions = Object.values(emissions).reduce((sum, value) => sum + value, 0);
-    let highestEmitter = Object.keys(emissions).reduce((a, b) => emissions[a] > emissions[b] ? a : b);
-    let suggestions = totalEmissions > emissionThreshold ? emissionReductionSuggestions[highestEmitter] : [];
-
-    return { totalEmissions, highestEmitter, suggestions };
 };
+
+// Function to calculate carbon emissions dynamically
+const calculateCarbonEmission = async (data) => {
+    // Load emission factors dynamically (each factor is expected to have properties: factor, threshold, suggestions)
+    const emissionFactors = await loadEmissionFactors();
+    let emissions = {};      // will hold the calculated emissions for each category
+    let totalEmissions = 0;  // cumulative total emissions
+  
+    // Calculate emissions for each category found in the input data
+
+    data.forEach((value, key) =>{
+
+      if (emissionFactors[key.toLowerCase()] && !isNaN(value) && !isNaN(emissionFactors[key.toLowerCase()].factor)) {
+        const emissionValue = value * emissionFactors[key.toLowerCase()].factor;
+        emissions[key] = emissionValue;
+        totalEmissions += emissionValue;
+      }
+    })
+
+    // Determine the category with  highest emissions, if  exist
+    let highestEmitter = null;
+    if (Object.keys(emissions).length > 0) {
+      highestEmitter = Object.keys(emissions).reduce((a, b) =>
+        emissions[a] > emissions[b] ? a : b
+      );
+    }
+    // Convert the emissions object to a Map for the categoryEmissions field
+    const categoryEmissions = emissions;
+    // Collect suggestions if the calculated emission for a category exceeds its threshold
+    let suggestions = [];
+    Object.keys(emissions).forEach((key) => {
+      console.log("gowa el if condition")
+      console.log(key)
+      console.log(emissionFactors[key.toLowerCase()])
+      if (emissionFactors[key.toLowerCase()] && emissions[key] > (emissionFactors[key.toLowerCase()].threshold || 0)) {
+        console.log("barra el if condition")
+        suggestions.push(...(emissionFactors[key.toLowerCase()].suggestions || []));
+      }
+    });
+  
+    // Return the new structure
+    return { totalEmissions, highestEmitter, categoryEmissions, suggestions };
+  };
 
 module.exports = { calculateCarbonEmission };
