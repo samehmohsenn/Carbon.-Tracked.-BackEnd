@@ -27,22 +27,23 @@ const userSchema = new mongoose.Schema({
 });
 
 // hash password before saving
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next(); // if password not modified, no need to hash
+// userSchema.pre('save', async function(next) {
+//   if (!this.isModified('password')) return next(); // if password not modified, no need to hash
   
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
+//   try {
+//     const salt = await bcrypt.genSalt(10);
+//     this.password = await bcrypt.hash(this.password, salt);
+//     next();
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 //compare password during login
-userSchema.methods.comparePassword = async function(candidatePassword) {
-  return bcrypt.compare(candidatePassword, this.password);
-};
+// userSchema.methods.comparePassword = async function(candidatePassword) {
+//   return bcrypt.compare(candidatePassword, this.password);
+//   console.log(candidatePassword,this.password)
+// };
 
 const User = mongoose.model('User', userSchema);
 

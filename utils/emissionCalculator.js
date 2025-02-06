@@ -32,14 +32,26 @@ const calculateCarbonEmission = async (data) => {
   
     // Calculate emissions for each category found in the input data
 
-    data.forEach((value, key) =>{
+    // data.forEach((value, key) =>{
 
-      if (emissionFactors[key.toLowerCase()] && !isNaN(value) && !isNaN(emissionFactors[key.toLowerCase()].factor)) {
+    //   if (emissionFactors[key.toLowerCase()] && !isNaN(value) && !isNaN(emissionFactors[key.toLowerCase()].factor)) {
+    //     const emissionValue = value * emissionFactors[key.toLowerCase()].factor;
+    //     emissions[key] = emissionValue;
+    //     totalEmissions += emissionValue;
+    //   }
+    // })
+    Object.entries(data).forEach(([key, value]) => {
+      if (
+        emissionFactors[key.toLowerCase()] &&
+        !isNaN(value) &&
+        !isNaN(emissionFactors[key.toLowerCase()].factor)
+      ) {
         const emissionValue = value * emissionFactors[key.toLowerCase()].factor;
         emissions[key] = emissionValue;
         totalEmissions += emissionValue;
       }
-    })
+    });
+    
 
     // Determine the category with  highest emissions, if  exist
     let highestEmitter = null;
@@ -53,9 +65,7 @@ const calculateCarbonEmission = async (data) => {
     // Collect suggestions if the calculated emission for a category exceeds its threshold
     let suggestions = [];
     Object.keys(emissions).forEach((key) => {
-      console.log("gowa el if condition")
-      console.log(key)
-      console.log(emissionFactors[key.toLowerCase()])
+
       if (emissionFactors[key.toLowerCase()] && emissions[key] > (emissionFactors[key.toLowerCase()].threshold || 0)) {
         console.log("barra el if condition")
         suggestions.push(...(emissionFactors[key.toLowerCase()].suggestions || []));

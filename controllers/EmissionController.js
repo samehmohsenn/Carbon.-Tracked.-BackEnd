@@ -1,17 +1,22 @@
 const mongoose = require('mongoose');
 const CompanyEmission = require("../models/CompanyEmission");
 const { calculateCarbonEmission } = require("../utils/emissionCalculator");
+const User = require('../models/User');
+const authenticateJWT = require('../middleware/authMiddleware'); // Import the auth middleware
 
 exports.addEmissionData = async (req, res) => {
     try {
         // Use req.body.user instead of req.user
         //const userId = req.body.user || req.user;
         //console.log(userID + "aaa")
-
-
+        const { username, data, month } = req.body;
+        const user = await User.findOne({ "username" : username});
+        if (!user) {
+          return res.status(404).json({ message: "User not found" });
+        }
         const requestData = {
             ...req.body,
-            user: new mongoose.Types.ObjectId(req.body.user)
+            user: new mongoose.Types.ObjectId(user._id)
         };
 
         // Calculate emissions
@@ -101,23 +106,35 @@ exports.deleteEmissionData = async (req, res) => {
 };
 
 exports.getEmissionReport = async (req, res) => {
+
     try {
+        if (!req.user) {
+            return res.status(401).json({ error: "Unauthorized access" });
+        }
         let query;
         
         // Handle single report vs all reports for a user
         if (req.params.id) {
-            query = { _id: req.params.id };
+            let id = new mongoose.Types.ObjectId(req.params.id)
+            query = { "_id": id };  
+
         } else {
             // Fixed the route parameter to match '/reports/userID'
             const userID = req.params.userID;
-            
             // Verify user is requesting their own data
-            // if (userID !== req.user._id.toString()) {
-            //     return res.status(403).json({ error: "Unauthorized access" });
-            // }
+            console.log("text"+userID);
+            console.log("Request Params:", JSON.stringify(req.params, null, 2));
+            // console.log("Request User:", JSON.stringify(req.user, null, 2));
+            // //console.log("poopsie", JSON.stringify(req.user, null, 2)["userId"]);
+            console.log("poopsie", req.user.userId )
+
+            if (userID !== req.user.userId) {
+                return res.status(403).json({ error: "Unauthorized access" });
+            }
             
             query = { user: userID };
         }
+
         
         const emissions = await CompanyEmission.find(query);
         if (req.params.id && emissions.length === 0) {
@@ -125,11 +142,25 @@ exports.getEmissionReport = async (req, res) => {
         }
 
         const reports = await Promise.all(emissions.map(async (emission) => {
+            console.log(emission.data)
 
             const { totalEmissions, highestEmitter, categoryEmissions, suggestions } =
                 await calculateCarbonEmission(emission.data);       
                 //console.log(totalEmissions, highestEmitter, categoryEmissions, suggestions);
     
+                const testing = {
+                    reportId: emission._id,
+                    userID: emission.user,
+                    month: emission.month,
+                    totalEmissions,
+                    highestEmitter,
+                    categoryEmissions,
+                    suggestions,
+                    additionDate: emission.additionDate
+                }
+                console.log(testing)
+
+
             return {
                 reportId: emission._id,
                 userID: emission.user,

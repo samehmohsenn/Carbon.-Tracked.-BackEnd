@@ -3,8 +3,7 @@ const express = require("express");
 const router = express.Router();
 const CompanyEmission = require('../models/CompanyEmission'); // Adjust the path if needed
 const EmissionController = require("../controllers/EmissionController");
-//const auth = require("../middleware/auth"); // Assuming you have authentication middleware
-
+const authenticateJWT = require('../middleware/authMiddleware'); // Import the auth middleware
 // Apply authentication middleware to all routes
 //router.use(auth);
 
@@ -24,7 +23,8 @@ router.delete("/:id", EmissionController.deleteEmissionData);
 router.get("/report/:id", EmissionController.getEmissionReport);
 
 // Get all reports for this user 
-router.get("/reports/:userID", EmissionController.getEmissionReport);
+// router.get("/reports/:userID", EmissionController.getEmissionReport);
+router.get("/reports/:userID", authenticateJWT.verifyToken, EmissionController.getEmissionReport);
 //for test
 // router.get('/', async (req, res) => {
 //     try {
