@@ -16,8 +16,8 @@ exports.register = async (req, res) => {
     // Hash password before saving
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-    console.log("Original Password:", password);
-    console.log("Hashed Password:", hashedPassword);
+    // console.log("Original Password:", password);
+    // console.log("Hashed Password:", hashedPassword);
 
     // Create new user with hashed password
     const newUser = new User({
@@ -26,7 +26,7 @@ exports.register = async (req, res) => {
       industry,
       companyName
     });
-    
+
     await newUser.save();
     res.status(201).json({ message: 'User registered successfully' });
     
@@ -49,12 +49,12 @@ exports.login = async (req, res) => {
       }
 
         // Compare password
-        console.log(password + " from frontend")
-        console.log("User from DB:", user);
-        console.log("Entered Password:", req.body.password);
-        console.log("Stored Hashed Password:", user?.password);
+        // console.log(password + " from frontend")
+        // console.log("User from DB:", user);
+        // console.log("Entered Password:", req.body.password);
+        // console.log("Stored Hashed Password:", user?.password);
       const isMatch = await bcrypt.compare(password, user.password);
-      console.log("Is Password Match?:", isMatch);
+      // console.log("Is Password Match?:", isMatch);
       if (!isMatch) {
         return res.status(400).json({ message: 'Invalid username or password' });
       }

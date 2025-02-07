@@ -28,4 +28,5 @@ const companyEmissionSchema = new mongoose.Schema({  user: {
   }
 });
 
-module.exports = mongoose.model("CompanyEmission", companyEmissionSchema); // exports the model of the database that is based on the created schema
+const CompanyEmission = mongoose.model("CompanyEmission", companyEmissionSchema);
+module.exports = CompanyEmission; // exports the model of the database that is based on the created schema

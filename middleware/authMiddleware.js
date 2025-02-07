@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 
+
 const verifyToken = (req, res, next) => {
 const token = req.header('Authorization')?.replace('Bearer ', ''); // Extract token from Authorization header
 
@@ -9,7 +10,7 @@ const token = req.header('Authorization')?.replace('Bearer ', ''); // Extract to
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify token using the secret key
-        console.log("Decoded Token:", decoded); // Debugging log
+        // console.log("Decoded Token:", decoded); // Debugging log
         // Optionally, you can fetch the user from the database using decoded user ID
         // const user = await User.findById(decoded._id); 
         

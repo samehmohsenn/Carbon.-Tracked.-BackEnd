@@ -10,6 +10,7 @@ exports.addEmissionData = async (req, res) => {
         //const userId = req.body.user || req.user;
         //console.log(userID + "aaa")
         const { username, data, month } = req.body;
+
         const user = await User.findOne({ "username" : username});
         if (!user) {
           return res.status(404).json({ message: "User not found" });
@@ -18,7 +19,18 @@ exports.addEmissionData = async (req, res) => {
             ...req.body,
             user: new mongoose.Types.ObjectId(user._id)
         };
+        // console.log("poopsie", requestData.user);
+        const returnedEmission = await CompanyEmission.findOne({ "user" : requestData.user, "month" : month}).lean();
+        // console.log(returnedEmission.month);
+        // const testing = (month === returnedEmission.month) ;
+        // console.log("testing" );
+        // console.log(month + "end of month");
+        // console.log(returnedEmission?.month+ " end of returnedEmission.month");
 
+        
+        if (month === returnedEmission?.month) {
+            return res.status(404).json({ message: "Data for this month already exists" });
+        }
         // Calculate emissions
         const { totalEmissions, highestEmitter, categoryEmissions, suggestions } =
             await calculateCarbonEmission(requestData.data);
@@ -122,11 +134,11 @@ exports.getEmissionReport = async (req, res) => {
             // Fixed the route parameter to match '/reports/userID'
             const userID = req.params.userID;
             // Verify user is requesting their own data
-            console.log("text"+userID);
-            console.log("Request Params:", JSON.stringify(req.params, null, 2));
+            // console.log("text"+userID);
+            // console.log("Request Params:", JSON.stringify(req.params, null, 2));
             // console.log("Request User:", JSON.stringify(req.user, null, 2));
-            // //console.log("poopsie", JSON.stringify(req.user, null, 2)["userId"]);
-            console.log("poopsie", req.user.userId )
+            // console.log("poopsie", JSON.stringify(req.user, null, 2));
+            // console.log("poopsie", req.user.userId )
 
             if (userID !== req.user.userId) {
                 return res.status(403).json({ error: "Unauthorized access" });
@@ -136,29 +148,34 @@ exports.getEmissionReport = async (req, res) => {
         }
 
         
-        const emissions = await CompanyEmission.find(query);
+        const emissions = await CompanyEmission.find(query).lean();
         if (req.params.id && emissions.length === 0) {
             return res.status(404).json({ message: "Report not found" });
         }
 
         const reports = await Promise.all(emissions.map(async (emission) => {
-            console.log(emission.data)
+            // console.log(emission+ " that was emission") 
+            // console.log(JSON.stringify(emission.data, null, 2) + " that was emission.data");
+            // console.log("testing "+Object.fromEntries(emission.data))
+
+            // console.log("emission "+emission)
+            // console.log("emission data "+emission.data)
 
             const { totalEmissions, highestEmitter, categoryEmissions, suggestions } =
                 await calculateCarbonEmission(emission.data);       
-                //console.log(totalEmissions, highestEmitter, categoryEmissions, suggestions);
+                // console.log(totalEmissions, highestEmitter, categoryEmissions, suggestions);
     
-                const testing = {
-                    reportId: emission._id,
-                    userID: emission.user,
-                    month: emission.month,
-                    totalEmissions,
-                    highestEmitter,
-                    categoryEmissions,
-                    suggestions,
-                    additionDate: emission.additionDate
-                }
-                console.log(testing)
+                    const testing = {
+                        reportId: emission._id,
+                        userID: emission.user,
+                        month: emission.month,
+                        totalEmissions,
+                        highestEmitter,
+                        categoryEmissions,
+                        suggestions,
+                        additionDate: emission.additionDate
+                    }
+                    console.log(testing)
 
 
             return {

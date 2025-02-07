@@ -40,17 +40,23 @@ const calculateCarbonEmission = async (data) => {
     //     totalEmissions += emissionValue;
     //   }
     // })
-    Object.entries(data).forEach(([key, value]) => {
-      if (
-        emissionFactors[key.toLowerCase()] &&
-        !isNaN(value) &&
-        !isNaN(emissionFactors[key.toLowerCase()].factor)
-      ) {
-        const emissionValue = value * emissionFactors[key.toLowerCase()].factor;
-        emissions[key] = emissionValue;
-        totalEmissions += emissionValue;
-      }
-    });
+Object.entries(data).forEach(([key, value], index) => {
+  
+  console.log(key, value);
+  console.log(index);
+
+  if (emissionFactors[key.toLowerCase()] &&
+    !isNaN(value) &&
+    !isNaN(emissionFactors[key.toLowerCase()].factor)
+  ) {
+    const emissionValue = value * emissionFactors[key.toLowerCase()].factor;
+
+    emissions[key] = emissionValue;
+    totalEmissions += emissionValue;
+    // console.log(emissions[key]+"emissionValue");
+
+  }
+});
     
 
     // Determine the category with  highest emissions, if  exist
@@ -67,7 +73,7 @@ const calculateCarbonEmission = async (data) => {
     Object.keys(emissions).forEach((key) => {
 
       if (emissionFactors[key.toLowerCase()] && emissions[key] > (emissionFactors[key.toLowerCase()].threshold || 0)) {
-        console.log("barra el if condition")
+        // console.log("barra el if condition")
         suggestions.push(...(emissionFactors[key.toLowerCase()].suggestions || []));
       }
     });
