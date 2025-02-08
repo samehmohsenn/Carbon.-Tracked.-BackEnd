@@ -1,4 +1,4 @@
-### This is the BackEnd API for the Carbon. Tracked. Project. Created with ExpressJS and a mongoDB database.
+### This is the BackEnd API for  Carbon. Tracked. Created with ExpressJS and a mongoDB database.
 
 Carbon. Tracked. is a MERN stack project centered around enterprises' concern toward achieving a lower carbon footprint, while still continuing to provide the essence of their business.
 
