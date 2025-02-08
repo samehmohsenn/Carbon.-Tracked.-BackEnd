@@ -1,0 +1,193 @@
+[{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe6b"
+  },
+  "name": "Electricity",
+  "unit": "KWh",
+  "factor": 0.5,
+  "threshold": 1,
+  "suggestions": [
+    "Switch to renewables",
+    "Use LED lighting",
+    "Implement smart meters"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe6c"
+  },
+  "name": "Natural Gas",
+  "unit": "m³",
+  "factor": 2,
+  "threshold": 1,
+  "suggestions": [
+    "Improve insulation",
+    "Use high-efficiency appliances",
+    "Reduce heating demand"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe6d"
+  },
+  "name": "Petrol Usage",
+  "unit": "Liters",
+  "factor": 2.31,
+  "threshold": 1,
+  "suggestions": [
+    "Switch to electric vehicles",
+    "Optimize logistics",
+    "Use biofuels"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe6e"
+  },
+  "name": "Diesel Usage",
+  "unit": "Liters",
+  "factor": 2.7,
+  "threshold": 1,
+  "suggestions": [
+    "Switch to electric vehicles",
+    "Optimize logistics",
+    "Use biofuels"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe6f"
+  },
+  "name": "General Waste",
+  "unit": "kg",
+  "factor": 1.1,
+  "threshold": 1,
+  "suggestions": [
+    "Reduce waste generation",
+    "Improve waste sorting",
+    "Implement waste-to-energy solutions"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe70"
+  },
+  "name": "Food Waste",
+  "unit": "kg",
+  "factor": 1.2,
+  "threshold": 1,
+  "suggestions": [
+    "Implement composting",
+    "Reduce food waste at source",
+    "Use anaerobic digestion"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe71"
+  },
+  "name": "Recyclables - Plastic",
+  "unit": "kg",
+  "factor": 7,
+  "threshold": 1,
+  "suggestions": [
+    "Increase plastic recycling",
+    "Use biodegradable alternatives",
+    "Reduce single-use plastics"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe72"
+  },
+  "name": "Recyclables - Paper",
+  "unit": "kg",
+  "factor": 1.8,
+  "threshold": 1,
+  "suggestions": [
+    "Increase paper recycling",
+    "Go paperless where possible",
+    "Use sustainable paper sources"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe73"
+  },
+  "name": "Recyclables - Glass",
+  "unit": "kg",
+  "factor": 0.25,
+  "threshold": 1,
+  "suggestions": [
+    "Improve glass recycling rates",
+    "Reuse glass packaging",
+    "Use lightweight glass products"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe74"
+  },
+  "name": "Recyclables - Metals",
+  "unit": "kg",
+  "factor": 7,
+  "threshold": 1,
+  "suggestions": [
+    "Recycle scrap metals",
+    "Use aluminum alternatives",
+    "Optimize metal usage in production"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe75"
+  },
+  "name": "Production Waste",
+  "unit": "kg",
+  "factor": 2.5,
+  "threshold": 1,
+  "suggestions": [
+    "Optimize production processes",
+    "Use sustainable raw materials",
+    "Improve waste management"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a0c1f06ecbedf48b3abe76"
+  },
+  "name": "Packaging Waste",
+  "unit": "kg",
+  "factor": 3.2,
+  "threshold": 1,
+  "suggestions": [
+    "Reduce excessive packaging",
+    "Switch to recyclable materials",
+    "Encourage circular economy practices"
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67a3d34034a1a6639f03ad7f"
+  },
+  "name": "Fuel",
+  "unit": "Litres",
+  "factor": 0.5,
+  "threshold": 1000,
+  "suggestions": [
+    "Fuel suggestion 1",
+    "Fuel suggestion 2"
+  ]
+}]

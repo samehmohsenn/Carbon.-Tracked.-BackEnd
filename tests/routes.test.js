@@ -1,4 +1,3 @@
-// utils/testRoutes.js
 const http = require('http');
 
 const testRoutes = () => {

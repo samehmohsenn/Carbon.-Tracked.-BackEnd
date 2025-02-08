@@ -12,14 +12,6 @@ const app = express();
 const port = 3000;
 app.use(cors()); // Allows requests from any origin
 
-// OR more secure (if frontend is running on localhost:5173)
-app.use(cors());
-//     {
-//   origin: 'http://localhost:5173', // Allow only frontend
-//   methods: 'GET,POST,PUT,DELETE',
-//   credentials: true
-// }
-
 
 app.use(express.json());
 app.use("/EmissionData", emissionRoutes); // use these routes on this path

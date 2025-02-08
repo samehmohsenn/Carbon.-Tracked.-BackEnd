@@ -1,4 +1,3 @@
-// utils/testEmissionCalculator.js
 const { calculateCarbonEmission } = require('../utils/emissionCalculator');
 
 const testCalculator = async () => {

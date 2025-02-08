@@ -3,8 +3,8 @@ const EmissionFactor = require("./models/EmissionFactor");
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/emissionDataDB")
-    .then(() => console.log("✅ Connected to MongoDB"))
-    .catch(err => console.error("❌ DB Connection Error:", err));
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(err => console.error("DB Connection Error:", err));
 
 // Hardcoded Emission Factors
 const emissionFactors = [
@@ -89,10 +89,10 @@ const seedDB = async () => {
     try {
         await EmissionFactor.deleteMany(); // Clear existing data
         await EmissionFactor.insertMany(emissionFactors);
-        console.log("✅ Emission Factors Seeded!");
+        console.log("Emission Factors Seeded!");
         mongoose.connection.close();
     } catch (err) {
-        console.error("❌ Seeding Error:", err);
+        console.error("Seeding Error:", err);
     }
 };
 

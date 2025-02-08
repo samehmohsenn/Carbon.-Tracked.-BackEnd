@@ -1,11 +1,9 @@
 
 const express = require("express");
 const router = express.Router();
-const CompanyEmission = require('../models/CompanyEmission'); // Adjust the path if needed
+const CompanyEmission = require('../models/CompanyEmission'); 
 const EmissionController = require("../controllers/EmissionController");
-const authenticateJWT = require('../middleware/authMiddleware'); // Import the auth middleware
-// Apply authentication middleware to all routes
-//router.use(auth);
+const authenticateJWT = require('../middleware/authMiddleware'); // Import auth middleware
 
 // Get all emissions for authenticated user
 router.get("/:userID", EmissionController.getEmissionData);
@@ -23,27 +21,7 @@ router.delete("/:id", EmissionController.deleteEmissionData);
 router.get("/report/:id", EmissionController.getEmissionReport);
 
 // Get all reports for this user 
-// router.get("/reports/:userID", EmissionController.getEmissionReport);
 router.get("/reports/:userID", authenticateJWT.verifyToken, EmissionController.getEmissionReport);
-//for test
-// router.get('/', async (req, res) => {
-//     try {
-//         const emissions = await CompanyEmission.find({});
-//         res.status(200).json(emissions);
-//     } catch (error) {
-//         res.status(500).json({ error: error.message });
-//     }
-// });
-// router.post('/', async (req, res) => {
-//     try {
-//         // Assume that your addEmissionData controller is used here or inline logic
-//         // For example:
-//         const emissionData = req.body;
-//         const newEmission = await CompanyEmission.create(emissionData);
-//         res.status(201).json(newEmission);
-//     } catch (error) {
-//         res.status(400).json({ error: error.message });
-//     }
-// });
+
 
 module.exports = router;
