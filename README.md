@@ -19,6 +19,8 @@ This project uses mongoDB to manage its data, make sure you have mongoDB install
 To load predefined factors and make the application running without making any changes in the database, import the attached ```emissionfactors.json``` file into your emissionfactors collection.
 This is a functional template for some emissionfactors, and can later be changed directly from mongoDB compass's UI.
 
+You can also run ```node seed``` in the project terminal to run a script that imports these collections.
+
 ## 3. Environment Variables: 
 This project requires a .env file to run properly. For security reasons, the .env file is not included in the repository , you need to create one manually.
 
